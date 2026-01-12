@@ -13,7 +13,6 @@ function App() {
   return (
     <Router>
       <div className="App">
-        {/* MENU NAWIGACYJNE */}
         <nav className="main-nav">
           <ul>
             <li><NavLink to="/tabela-kursowa">Kursy walut</NavLink></li>
@@ -22,18 +21,12 @@ function App() {
           </ul>
         </nav>
 
-        {/* MIEJSCE NA TREŚĆ PODSTRON */}
         <main className="content">
           <Routes>
-            {/* Strona główna od razu pokazuje tabelę */}
             <Route path="/" element={<TabelaKursowa />} />
-            
-            {/* Podstrony główne */}
             <Route path="/tabela-kursowa" element={<TabelaKursowa />} />
             <Route path="/cena-zlota" element={<CenaZlota />} />
             <Route path="/autor" element={<Autor />} />
-            
-            {/* Dynamiczna podstrona szczegółów waluty */}
             <Route path="/tabela-kursowa/:waluta" element={<SzczegolyWaluty />} />
           </Routes>
         </main>
