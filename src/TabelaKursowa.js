@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const TabelaKursowa = () => {
-  // Stan przechowujący wybraną tabelę (domyślnie 'A')
   const [selectedTable, setSelectedTable] = useState('A');
   const [tableData, setTableData] = useState(null);
   const [loading, setLoading] = useState(true);
