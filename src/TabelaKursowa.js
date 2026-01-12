@@ -31,13 +31,12 @@ const TabelaKursowa = () => {
     };
 
     fetchRates();
-  }, [selectedTable]); // useEffect uruchomi się ponownie przy każdej zmianie selectedTable
+  }, [selectedTable]); 
 
   return (
     <div className="rates-container">
       <h2>Tabela Kursów Walut</h2>
 
-      {/* Lista wyboru tabeli */}
       <div className="table-selector">
         <label htmlFor="table-select">Wybierz typ tabeli: </label>
         <select 

@@ -16,7 +16,7 @@ const SzczegolyWaluty = () => {
   const [calculatedResult, setCalculatedResult] = useState(null);
   const [calcLoading, setCalcLoading] = useState(false);
 
-  // Pobranie danych podstawowych (kurs aktualny)
+  
   useEffect(() => {
     const fetchCurrentRate = async () => {
       try {
@@ -33,7 +33,6 @@ const SzczegolyWaluty = () => {
     fetchCurrentRate();
   }, [waluta]);
 
-  // Funkcja przeliczająca
   const handleCalculate = async (e) => {
   e.preventDefault();
   setCalcLoading(true);
@@ -42,7 +41,7 @@ const SzczegolyWaluty = () => {
   let tempDate = new Date(selectedDate);
   let success = false;
   let attempts = 0;
-  const maxAttempts = 7; // Szukamy maksymalnie do tygodnia wstecz
+  const maxAttempts = 20;
 
   while (!success && attempts < maxAttempts) {
     const dateString = tempDate.toISOString().split('T')[0];
@@ -59,12 +58,11 @@ const SzczegolyWaluty = () => {
         setCalculatedResult({
           value: result,
           rate: rate,
-          date: data.rates[0].effectiveDate, // To będzie faktyczna data kursu (np. piątek)
-          originalDate: selectedDate        // To data wybrana przez użytkownika
+          date: data.rates[0].effectiveDate,
+          originalDate: selectedDate        
         });
         success = true;
       } else {
-        // Jeśli błąd 404, cofamy się o 1 dzień
         tempDate.setDate(tempDate.getDate() - 1);
         attempts++;
       }
@@ -75,7 +73,7 @@ const SzczegolyWaluty = () => {
   }
 
   if (!success) {
-    alert("Nie znaleziono kursu w ciągu ostatnich 7 dni od wybranej daty.");
+    alert("Nie znaleziono kursu w ciągu ostatnich 20 dni od wybranej daty.");
   }
   setCalcLoading(false);
 };
@@ -94,7 +92,6 @@ const SzczegolyWaluty = () => {
 
       <hr />
 
-      {/* FORMULARZ PRZELICZANIA */}
       <section className="calculator-section">
         <h3>🧮 Kalkulator walutowy</h3>
         <form onSubmit={handleCalculate} className="calc-form">

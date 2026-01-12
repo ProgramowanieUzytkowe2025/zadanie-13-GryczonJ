@@ -72,7 +72,6 @@ const CenaZlota = () => {
     },
   };
 
-  // Najnowsza cena to ostatni element w tablicy (bo nie robiliśmy .reverse())
   const currentPrice = history[history.length - 1];
 
   return (
@@ -87,12 +86,11 @@ const CenaZlota = () => {
         <p className="gold-date">Notowanie z dnia: {currentPrice.data}</p>
       </section>
 
-      {/* SEKCJA WYKRESU */}
+
       <section className="chart-section" style={{ marginTop: '40px', background: 'white', padding: '20px', borderRadius: '10px' }}>
         <Line options={chartOptions} data={chartData} />
       </section>
 
-      {/* TABELA DANYCH (opcjonalnie pokazujemy tylko ostatnie 10, by nie było zbyt długo) */}
       <section className="history-section" style={{ marginTop: '40px' }}>
         <h3>📜 Historia notowań</h3>
         <table className="exchange-table">

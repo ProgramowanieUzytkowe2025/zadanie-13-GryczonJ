@@ -9,7 +9,6 @@ const Autor = () => {
       </header>
 
       <div className="autor-card">
-        {/* Sekcja nagłówkowa karty */}
         <div className="details-card" style={{ textAlign: 'center', borderLeft: 'none', borderBottom: '5px solid var(--primary-blue)' }}>
           <h1 style={{ margin: '10px 0 5px 0', color: 'var(--primary-blue)' }}>Jan Gryczon</h1>
           <p style={{ fontSize: '1.2rem', color: '#666', fontWeight: '500' }}>
@@ -17,7 +16,6 @@ const Autor = () => {
           </p>
         </div>
 
-        {/* Dane akademickie */}
         <div className="info-box">
           <h3 className="section-title" style={{ marginTop: 0 }}>🎓 Dane Akademickie</h3>
           <table className="exchange-table" style={{ boxShadow: 'none', marginTop: '10px' }}>
@@ -42,7 +40,7 @@ const Autor = () => {
           </table>
         </div>
 
-        {/* Opis projektu */}
+  
         <div className="details-card" style={{ marginTop: '30px' }}>
           <h3 className="section-title" style={{ marginTop: 0 }}>🚀 O Projekcie</h3>
           <p style={{ lineHeight: '1.6' }}>
