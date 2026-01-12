@@ -1,4 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+
+// Rejestracja elementów wykresu
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const CenaZlota = () => {
   const [history, setHistory] = useState([]);
@@ -6,14 +28,14 @@ const CenaZlota = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Pobieramy 10 ostatnich notowań
     const fetchGoldHistory = async () => {
       try {
-        const response = await fetch('https://api.nbp.pl/api/cenyzlota/last/10?format=json');
-        if (!response.ok) throw new Error('Nie udało się pobrać danych historycznych.');
+        // Pobieramy 30 ostatnich notowań dla wykresu
+        const response = await fetch('https://api.nbp.pl/api/cenyzlota/last/30?format=json');
+        if (!response.ok) throw new Error('Nie udało się pobrać danych.');
         
         const data = await response.json();
-        setHistory(data.reverse()); // Odwracamy, by najnowsze było na górze
+        setHistory(data); // Dla wykresu potrzebujemy dat chronologicznie
       } catch (err) {
         setError(err.message);
       } finally {
@@ -24,36 +46,67 @@ const CenaZlota = () => {
     fetchGoldHistory();
   }, []);
 
-  if (loading) return <p>Ładowanie danych...</p>;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+  if (loading) return <div className="loader">Pobieranie danych...</div>;
+  if (error) return <div className="error">{error}</div>;
 
-  const currentPrice = history[0];
+  // Przygotowanie danych do wykresu
+  const chartData = {
+    labels: history.map(item => item.data), // Oś X: Daty
+    datasets: [
+      {
+        label: 'Cena złota (PLN/g)',
+        data: history.map(item => item.cena), // Oś Y: Ceny
+        borderColor: '#ffd700',
+        backgroundColor: 'rgba(255, 215, 0, 0.5)',
+        tension: 0.3, // Zakrzywienie linii
+        fill: true,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      title: { display: true, text: 'Zmiana ceny złota w ciągu ostatnich 30 dni' },
+    },
+  };
+
+  // Najnowsza cena to ostatni element w tablicy (bo nie robiliśmy .reverse())
+  const currentPrice = history[history.length - 1];
 
   return (
-    <div className="gold-page">
-      <h2>Notowania Ceny Złota</h2>
+    <div className="gold-container">
+      <header className="gold-header">
+        <h2>💰 Notowania Ceny Złota</h2>
+      </header>
 
-      {/* Aktualna cena w wyróżnionym boksie */}
-      <section className="current-price-box">
-        <h3>Aktualne notowanie ({currentPrice.data})</h3>
-        <p className="price-value">{currentPrice.cena} PLN / g</p>
+      <section className="gold-card">
+        <span className="card-label">Aktualna cena</span>
+        <h1 className="gold-price">{currentPrice.cena.toFixed(2)} PLN</h1>
+        <p className="gold-date">Notowanie z dnia: {currentPrice.data}</p>
       </section>
 
-      {/* Tabela z historią (10 ostatnich) */}
-      <section className="history-section">
-        <h3>Ostatnie 10 notowań</h3>
-        <table className="gold-table">
+      {/* SEKCJA WYKRESU */}
+      <section className="chart-section" style={{ marginTop: '40px', background: 'white', padding: '20px', borderRadius: '10px' }}>
+        <Line options={chartOptions} data={chartData} />
+      </section>
+
+      {/* TABELA DANYCH (opcjonalnie pokazujemy tylko ostatnie 10, by nie było zbyt długo) */}
+      <section className="history-section" style={{ marginTop: '40px' }}>
+        <h3>📜 Historia notowań</h3>
+        <table className="exchange-table">
           <thead>
             <tr>
               <th>Data</th>
-              <th>Cena (PLN/g)</th>
+              <th style={{ textAlign: 'right' }}>Cena (PLN)</th>
             </tr>
           </thead>
           <tbody>
-            {history.map((item, index) => (
+            {[...history].reverse().slice(0, 10).map((item, index) => (
               <tr key={index}>
                 <td>{item.data}</td>
-                <td>{item.cena.toFixed(2)}</td>
+                <td className="rate-value" style={{ textAlign: 'right' }}>{item.cena.toFixed(2)}</td>
               </tr>
             ))}
           </tbody>
