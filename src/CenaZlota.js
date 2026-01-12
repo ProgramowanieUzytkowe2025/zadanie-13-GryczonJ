@@ -34,7 +34,7 @@ const CenaZlota = () => {
         if (!response.ok) throw new Error('Nie udało się pobrać danych.');
         
         const data = await response.json();
-        setHistory(data); /
+        setHistory(data); 
       } catch (err) {
         setError(err.message);
       } finally {
