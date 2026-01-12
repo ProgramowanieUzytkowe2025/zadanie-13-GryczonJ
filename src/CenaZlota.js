@@ -11,7 +11,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
-// Rejestracja elementów wykresu
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -30,12 +30,11 @@ const CenaZlota = () => {
   useEffect(() => {
     const fetchGoldHistory = async () => {
       try {
-        // Pobieramy 30 ostatnich notowań dla wykresu
         const response = await fetch('https://api.nbp.pl/api/cenyzlota/last/30?format=json');
         if (!response.ok) throw new Error('Nie udało się pobrać danych.');
         
         const data = await response.json();
-        setHistory(data); // Dla wykresu potrzebujemy dat chronologicznie
+        setHistory(data); /
       } catch (err) {
         setError(err.message);
       } finally {
@@ -49,16 +48,16 @@ const CenaZlota = () => {
   if (loading) return <div className="loader">Pobieranie danych...</div>;
   if (error) return <div className="error">{error}</div>;
 
-  // Przygotowanie danych do wykresu
+
   const chartData = {
-    labels: history.map(item => item.data), // Oś X: Daty
+    labels: history.map(item => item.data),
     datasets: [
       {
         label: 'Cena złota (PLN/g)',
-        data: history.map(item => item.cena), // Oś Y: Ceny
+        data: history.map(item => item.cena), 
         borderColor: '#ffd700',
         backgroundColor: 'rgba(255, 215, 0, 0.5)',
-        tension: 0.3, // Zakrzywienie linii
+        tension: 0.3,
         fill: true,
       },
     ],
