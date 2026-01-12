@@ -5,12 +5,10 @@ const SzczegolyWaluty = () => {
   const { waluta } = useParams();
   const navigate = useNavigate();
 
-  // Stany dla danych podstawowych
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Stany dla formularza kalkulatora
   const [amount, setAmount] = useState(1);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [calculatedResult, setCalculatedResult] = useState(null);
